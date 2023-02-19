@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:oauth_app/api/Google-signIn-api.dart';
 import 'package:oauth_app/page/LoggedInPage.dart';
 
 void main() {
-  runApp(const MyApp());
+  callEnv();
 }
 
+Future<void> callEnv() async {
+  await dotenv.load();
+  runApp(const MyApp());
+}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -66,14 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future signIn() async{
-    final user = await GoogleSignInApi.login();
+    GoogleSignInApi googleSignInApi = GoogleSignInApi();
+    final user = await googleSignInApi.login();
     if(user == null){
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Sign in Failed')));
     }
     else{
+      GoogleSignInAuthentication googleAuth =  await user.authentication;
+      print(googleAuth.idToken);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => LoggedInPage(user: user)));
+          builder: (context) => LoggedInPage(user: user ,googleSignInApi :googleSignInApi)));
     }
     // GoogleSignInApi.handleSignIn();
   }

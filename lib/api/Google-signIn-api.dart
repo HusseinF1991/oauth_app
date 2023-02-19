@@ -1,10 +1,14 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInApi {
-  static final _googleSignIn = GoogleSignIn();
 
-  static Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();
-  static Future logout() => _googleSignIn.disconnect();
+  final _googleSignIn = GoogleSignIn(scopes: [
+    'email', 'profile', 'openid'
+  ] , clientId: dotenv.env['CLIENT_ID']);
+
+  Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();
+  Future logout() => _googleSignIn.disconnect();
 
   // static GoogleSignIn _googleSignIn = GoogleSignIn(
   //   scopes: [
