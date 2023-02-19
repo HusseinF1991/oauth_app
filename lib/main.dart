@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:oauth_app/GoogleSignInApi.dart';
+import 'package:oauth_app/api/Google-signIn-api.dart';
+import 'package:oauth_app/page/LoggedInPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,8 +66,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future signIn() async{
-    // GoogleSignInApi.login();
-    GoogleSignInApi.handleSignIn();
+    final user = await GoogleSignInApi.login();
+    if(user == null){
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Sign in Failed')));
+    }
+    else{
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => LoggedInPage(user: user)));
+    }
+    // GoogleSignInApi.handleSignIn();
   }
 
   @override

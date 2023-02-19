@@ -47,16 +47,29 @@ android {
         applicationId "com.example.oauth_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+//        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 18
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file(System.getenv("STORE_FILE_PATH"))
+            storePassword System.getenv("STORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+        }
+        debug {
             signingConfig signingConfigs.debug
         }
     }
