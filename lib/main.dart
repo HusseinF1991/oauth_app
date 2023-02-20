@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:oauth_app/api/Google-signIn-api.dart';
+import 'package:oauth_app/api/Send-token-to-server.dart';
 import 'package:oauth_app/page/LoggedInPage.dart';
 
 void main() {
@@ -81,6 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
     else{
       GoogleSignInAuthentication googleAuth =  await user.authentication;
       print(googleAuth.idToken);
+      SendTokenToServer sendTokenToServer = SendTokenToServer(googleAuth.idToken!);
+      final response = await sendTokenToServer.response();
+      print('response : ${json.decode(response.body)}');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => LoggedInPage(user: user ,googleSignInApi :googleSignInApi)));
     }
