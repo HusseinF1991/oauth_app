@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class SendTokenToServer{
@@ -15,7 +16,7 @@ class SendTokenToServer{
 
 
   Future<http.Response> response() =>  http.post(
-    Uri.parse("http://192.168.2.58:3001/api/googleAuthenticated"),
+    Uri.parse(dotenv.env['CREATE_USER_URI'] ?? ''),
     headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.acceptHeader: 'application/json',
