@@ -46,4 +46,5 @@ app.*.map.json
 
 # keystore file
 /android/app/oauth-app-keystore.jks
+keystore.properties
 

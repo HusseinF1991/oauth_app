@@ -5,7 +5,7 @@ class GoogleSignInApi {
 
   final _googleSignIn = GoogleSignIn(scopes: [
     'email', 'profile', 'openid'
-  ] , clientId: dotenv.env['CLIENT_ID']);
+  ] , clientId: dotenv.env['CLIENT_ID'] );
 
   Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();
   Future logout() => _googleSignIn.disconnect();

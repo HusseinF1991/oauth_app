@@ -26,6 +26,10 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 
+// Load keystore
+def keystorePropertiesFile = rootProject.file("keystore.properties");
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
@@ -55,16 +59,17 @@ android {
         versionName flutterVersionName
     }
 
+
     signingConfigs {
         debug {
-//            keyAlias "oauth-app"
-//            keyPassword "123456789"
-//            storeFile file('oauth-app-keystore.jks')
-//            storePassword "123456789"
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
-            storeFile file(System.getenv("STORE_FILE_PATH"))
-            storePassword System.getenv("STORE_PASSWORD")
+            storeFile file(keystoreProperties['STORE_FILE_PATH'])
+            storePassword keystoreProperties['STORE_PASSWORD']
+            keyAlias keystoreProperties['KEY_ALIAS']
+            keyPassword keystoreProperties['KEY_PASSWORD']
+//            keyAlias System.getenv("KEY_ALIAS")
+//            keyPassword System.getenv("KEY_PASSWORD")
+//            storeFile file(System.getenv("STORE_FILE_PATH"))
+//            storePassword System.getenv("STORE_PASSWORD")
         }
     }
 
@@ -79,6 +84,7 @@ android {
         }
     }
 }
+
 
 flutter {
     source '../..'
